@@ -7,4 +7,6 @@ USE smart_factory;
 -- customer 테이블의 모든 내용 검색
 SELECT * FROM customer;
 SELECT * FROM orders;
+SELECT addr FROM customer where custname = '홍지수';
+
 
