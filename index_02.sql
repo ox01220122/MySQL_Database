@@ -1,5 +1,8 @@
 USE smart_factory;
-
+-- 데이터베이스 규칙 (소문자, 언더바) -> 회사마다 달라용
+/*
+	주석 !         단축키 : crtl + / 
+*/
 SELECT * FROM customer; -- 고객테이블의 모든 정보를 조회 
 SELECT * FROM orders;  -- 주문테이블의 모든 정보를 조회 
 SELECT custid FROM customer;  -- 모든 고객의 고객아이디를 검색
@@ -84,12 +87,24 @@ SELECT * FROM orders ORDER BY amount,price;
 -- 두 쿼리문의 결과는 상이함
 
 -- LIMIT : 출력개수 제한 
+-- 고객 테이블 전체 정보를 조회하는데, 앞에 2건만 조회하고 싶은 경우
+-- LIMIT 형식 : LIMIT 시작, 개수
+-- LIMIT 2 == LIMIT 0,2 (처음부터 2개) == LIMIT 2 OFFSET 0
+SELECT * FROM customer LIMIT 2; -- LIMIT은 제일 뒤에 !
+-- 문장이 길어지면 여러줄로 나눠서 쿼리를 작성한다 
+
+
+-- 2000년 이후 출생자 고객 중에서 앞에 두건만 조회하고 싶은 경우 
+SELECT * FROM customer WHERE birth >= '2000-01-01' LIMIT 2;
+-- 뒤에서 2건만 조회하고 싶은 경우 
+SELECT * FROM customer WHERE birth >= '2000-01-01'ORDER BY custid DESC LIMIT 2;
+-- 주의 LIMIT에서 시작은 0임을 잊지말자
+SELECT * FROM customer LIMIT 1,5;
+SELECT * FROM customer LIMIT 5 OFFSET 1;
+
+-- 문제 
 
 
 
 
 
--- 데이터베이스 규칙 (소문자, 언더바) -> 회사마다 달라용
-/*
-	주석 !         단축키 : crtl + / 
-*/
