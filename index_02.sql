@@ -102,7 +102,7 @@ SELECT * FROM customer WHERE birth >= '2000-01-01'ORDER BY custid DESC LIMIT 2;
 SELECT * FROM customer LIMIT 1,5;
 SELECT * FROM customer LIMIT 5 OFFSET 1;
 
--- 문제 
+
 
 
 
