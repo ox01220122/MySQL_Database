@@ -1,5 +1,4 @@
 USE smart_factory;
-
 SELECT * FROM user;
 
 -- 모든 회원 목록을 가져오는데 birthday컬럼 값을 기준으로 오름차순으로 정렬하여 가져오기
@@ -14,11 +13,17 @@ ORDER BY name DESC;
 SELECT Id, Name FROM user WHERE birthday LIKE '199%'; 
 
 -- 6월생 회원의 목록을 birthday기준으로 오름차순 정렬하여 가지고 오시오 
-SELECT * FROM user WHERE birthday LIKE '_____06%' ORDER BY birthday ;
+SELECT * FROM user WHERE birthday LIKE '_____06%' ORDER BY birthday ; -- %-06-% 으로도 가능 
 
 -- gender 컬럼의 값이 'M'이고 1970년대에 태어난 회원의 목록을 가져오세요
 SELECT * FROM user WHERE gender = 'M' and birthday LIKE '197%';
+
 -- 모든 회원의 목록중 age를 기준으로 내림차순하여 정렬하여 가져오는데 그때 처음 3개의 레코드만 가져오세요
 SELECT * FROM user ORDER BY age DESC LIMIT 3;
--- 모든 회원 목록 중 나이가 25이상 50이하인 회원의 목록을 출력하세요->
+
+-- 모든 회원 목록 중 나이가 25이상 50이하인 회원의 목록을 출력하세요
 SELECT * FROM user WHERE age>=25 and age<=50;
+
+
+
+

@@ -103,8 +103,79 @@ SELECT * FROM customer LIMIT 1,5;
 SELECT * FROM customer LIMIT 5 OFFSET 1;
 
 
+-- IS NULL
+DESC customer; -- 테이블 구조에 대한 설명을 알려준다 
+SELECT * FROM customer WHERE phone IS NULL; -- 고객 table에서 phone이 NULL인 고객조회
+
+-- 집계함수 
+-- SUM, AVG, MIN, MAX, COUNT
+-- 주문 테이블에서 총 주문 내역 건수 조회 (== 투플 개수)
+
+SELECT * FROM smart_factory.orders;
+SELECT COUNT(orderid) FROM orders;
+-- COUNT(*) : NULL도 포함해서 count한다
+-- COUNT(1) : NULL을 포함하지 않고 count한다
+-- COUNT(속성이름) : 속성값이 NULL인 것을 제외하고 카운트 
+
+SELECT COUNT(phone) FROM customer;
+SELECT COUNT(birth) FROM customer; -- NULL값이 있어서 위의 쿼리문과 결과가 다르다 
+
+SELECT SUM(amount) AS '총 판매' FROM orders; -- 전체 주문 
+SELECT SUM(amount) total_amount FROM orders; -- 동일한표현
+SELECT SUM(amount) 'total_amount' FROM orders; -- 동일한표현
+
+-- 주문 테이블에서 총 판매 개수, 평균 판매 개수 , 상품 최저가, 상품 최고가 검색 
+-- 총 판매 개수 : SUM, 평균 판매 개수 :AVG , 상품 최저가 : MIN, 상품 최고가  : MAX
+SELECT SUM(amount) AS '총 판매' 
+,AVG(amount) AS '평균판매' 
+,MIN(price) AS '최저가' 
+,MAX(price) AS '최고가' 
+FROM orders;
 
 
+-- GROUP BY : 속성이름끼리 그룹으로 묶는다 
+-- HAVING : 그룹화 조건
+
+-- 고객별로 주문한 주문내역 건수 구하기 
+SELECT custid, count(*) FROM orders GROUP BY custid;
+-- 고객별로 주문한 상품 총 수량 구하기
+SELECT custid,SUM(amount) FROM orders GROUP BY custid;
+
+-- 고객별로 주문한 총 주문액 구하기
+SELECT custid,SUM(price*amount) FROM orders GROUP BY custid;
 
 
+-- 상품별로 판매 개수 구하기 
+SELECT prodname, SUM(amount) FROM orders GROUP BY prodname; -- 중복값이 없어서 전체 출력과 동일하다 
+
+-- 짝수 해에 태어난 고객 조회
+SELECT custid,birth FROM customer WHERE left(birth,4)%2=0 ;
+
+-- 홀수 일에 태어난 고객 조회
+SELECT custid,birth FROM customer WHERE MOD(DAY(birth),2)=1 ;
+
+-- 2000-02-02 다음 날에 태어난 고객 조회
+SELECT * FROM customer WHERE birth = DATE('2000-02-22') + 1;
+
+-- 상품별로 판매개수 구하기 + 정렬
+SELECT prodname, SUM(amount)AS 'total_amount' FROM orders GROUP BY prodname ORDER BY SUM(amount) DESC;
+SELECT prodname, SUM(amount)AS 'total_amount' FROM orders GROUP BY prodname ORDER BY 'total_amount' DESC;
+
+-- HAVING
+-- GROUP BY명령 이후 추가 조건을 걸고싶을때 사용 
+-- 총 주문액이 10000원 이상인 고객에 대해 고객별로 주문한 상품 총수량 구하기  
+SELECT * FROM orders;
+SELECT custid,SUM(price*amount) FROM orders GROUP BY custid HAVING SUM(price*amount)>=10000;
+
+-- HAVING 절은 GROUP BY 절과 반드시 함께 사용
+-- HAVING 절은 WHERE절보다 뒤에 나와야 한다 
+
+SELECT custid,SUM(price*amount) FROM orders
+ WHERE custid!='bunny'
+ GROUP BY custid
+ HAVING SUM(price*amount)>=10000;
+
+SELECT custid,SUM(price*amount) FROM orders
+ GROUP BY custid
+ HAVING SUM(price*amount)>=10000 AND custid!='bunny'; -- 위 쿼리문과 동일하다
 
