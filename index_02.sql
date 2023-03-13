@@ -120,6 +120,12 @@ SELECT COUNT(orderid) FROM orders;
 SELECT COUNT(phone) FROM customer;
 SELECT COUNT(birth) FROM customer; -- NULL값이 있어서 위의 쿼리문과 결과가 다르다 
 
+
+SELECT MAX(birth) FROM customer;
+SELECT MIN(birth) FROM customer;
+
+
+
 SELECT SUM(amount) AS '총 판매' FROM orders; -- 전체 주문 
 SELECT SUM(amount) total_amount FROM orders; -- 동일한표현
 SELECT SUM(amount) 'total_amount' FROM orders; -- 동일한표현
