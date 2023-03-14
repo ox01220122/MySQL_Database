@@ -8,6 +8,10 @@ CREATE TABLE authors(
     email VARCHAR(50)
  );
  
+ -- DROP TABLE IF EXISTS authors;  만약 테이블에 authors가 있다면 DROP해주라는 뜻 
+ -- 삭제하려는 데이터 테이블이 존재하지 않아서 발생하는 에러 방지 키워드(있으면 지우고 없으면 그냥 지나감)
+
+ 
 CREATE TABLE books(
 	book_id int NOT NULL PRIMARY KEY, -- PRIMARY KEY는 NOT NULL이 포함되어 있어서 안써도된다  
     title VARCHAR(50),
@@ -23,6 +27,8 @@ CREATE TABLE orders(
     order_data date,
     FOREIGN KEY(book_id) REFERENCES books(book_id) ON UPDATE CASCADE ON DELETE CASCADE
  );
+
+
 
 INSERT INTO authors VALUES 
 	('1', 'J.K', 'Rowling', 'jkrowling@gmail.com'),
