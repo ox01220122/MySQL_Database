@@ -95,18 +95,38 @@ DELETE FROM authors WHERE author_id = '3';
 -- < 추가 실습 >
 -- 11. Stephen King이 쓴 모든 책의 제목과 발행일을 표시합니다.
 SELECT title, publication_data FROM books 
-WHERE books.author_id = (SELECT author_id FROM authors WHERE authors.first_name = 'Stephen');
--- 12. 책을 쓴 저자의 이름을 표시합니다.
+WHERE author_id = 
+(SELECT author_id FROM authors WHERE first_name = 'Stephen' AND last_name = 'King');
+
+-- JOIN으로 풀기
+SELECT title, publication_data 
+	FROM books JOIN authors ON books.author_id = authors.author_id 
+	WHERE first_name = 'Stephen' AND last_name = 'King';
+
+
+-- 12. 책을 쓴 저자의 이름을 표시합니다.  -> 이 문제 틀린 듯 (다른 데이터를 넣었을 때도 잘 동작해야한다)
 SELECT first_name,last_name FROM authors,books
 WHERE authors.author_id = books.author_id;
+
+-- 다른 방법
+SELECT first_name,last_name FROM authors,books
+JOIN books ON authors.author_id = books.author_id
+GROUP BY authors.author_id; -- GROUP BY를 쓰지 않으면 단순히 두 테이블을 연결해주는것밖에 안된다 
+
+-- 서브쿼리 사용하는 방법
+SELECT first_name, last_name
+FROM authors
+WHERE author_id IN (SELECT author_id FROM books);
+
 -- 13. 각 저자가 쓴 책의 수를 표시합니다.
-SELECT authors.first_name, authors.last_name, COUNT(books.book_id)   -- as 'num_books' 
+SELECT authors.first_name, authors.last_name, COUNT(books.book_id) as 'num_books' 
 	FROM authors,books
 	WHERE authors.author_id = books.author_id
-    GROUP BY books.book_id;
+    GROUP BY authors.author_id;
+    
 -- 14. 2022년 2월 16일 이후에 발생한 모든 주문에 대한 책 제목과 고객 이름을 표시합니다.
 SELECT books.title , orders.customer_name
 	FROM books, orders
-	WHERE  books.book_id = orders.book_id AND orders.order_data >= '2022-02-16';
+	WHERE books.book_id = orders.book_id AND orders.order_data >= '2022-02-16';
     
     
