@@ -11,7 +11,6 @@ CREATE TABLE authors(
  -- DROP TABLE IF EXISTS authors;  만약 테이블에 authors가 있다면 DROP해주라는 뜻 
  -- 삭제하려는 데이터 테이블이 존재하지 않아서 발생하는 에러 방지 키워드(있으면 지우고 없으면 그냥 지나감)
 
- 
 CREATE TABLE books(
 	book_id int NOT NULL PRIMARY KEY, -- PRIMARY KEY는 NOT NULL이 포함되어 있어서 안써도된다  
     title VARCHAR(50),
@@ -27,7 +26,6 @@ CREATE TABLE orders(
     order_data date,
     FOREIGN KEY(book_id) REFERENCES books(book_id) ON UPDATE CASCADE ON DELETE CASCADE
  );
-
 
 
 INSERT INTO authors VALUES 
@@ -46,7 +44,7 @@ INSERT INTO orders VALUES
 	('2', '2', 'Jane Doe', '2022-02-16'),
     ('3', '3', 'Bob Johnson', '2022-02-17');
 
-SELECT * FROM orders;
+SELECT * FROM authors;
 
 -- 1. author_id가 1인 작성자의 이메일을 jkrowling@yahoo.com으로 업데이트하는 SQL 문을 작성합니다.
 UPDATE authors SET email = 'jkrowling@yahoo.com' WHERE author_id='1';
@@ -94,3 +92,21 @@ SELECT * FROM authors;
 DELETE FROM authors WHERE author_id = '3';
 
 
+-- < 추가 실습 >
+-- 11. Stephen King이 쓴 모든 책의 제목과 발행일을 표시합니다.
+SELECT title, publication_data FROM books 
+WHERE books.author_id = (SELECT author_id FROM authors WHERE authors.first_name = 'Stephen');
+-- 12. 책을 쓴 저자의 이름을 표시합니다.
+SELECT first_name,last_name FROM authors,books
+WHERE authors.author_id = books.author_id;
+-- 13. 각 저자가 쓴 책의 수를 표시합니다.
+SELECT authors.first_name, authors.last_name, COUNT(books.book_id)   -- as 'num_books' 
+	FROM authors,books
+	WHERE authors.author_id = books.author_id
+    GROUP BY books.book_id;
+-- 14. 2022년 2월 16일 이후에 발생한 모든 주문에 대한 책 제목과 고객 이름을 표시합니다.
+SELECT books.title , orders.customer_name
+	FROM books, orders
+	WHERE  books.book_id = orders.book_id AND orders.order_data >= '2022-02-16';
+    
+    
