@@ -129,4 +129,8 @@ SELECT books.title , orders.customer_name
 	FROM books, orders
 	WHERE books.book_id = orders.book_id AND orders.order_data >= '2022-02-16';
     
-    
+-- 다른 방법 
+SELECT books.title, orders.customer_name
+FROM books JOIN orders
+ON books.book_id = orders.book_id
+WHERE orders.order_data >= '2022-02-16';
