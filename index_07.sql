@@ -33,3 +33,16 @@ DELETE FROM new_customer WHERE custid='kiwi';
 -- 외래키 연결되어있는 경우 연쇄삭제가 가능하다 
 SELECT * FROM new_customer ;
 SELECT * FROM new_orders ;
+
+-- DDL : CREAT, ALTER, DROP
+-- DML : SELECT, INSERT, UPDATE, DELETE
+
+
+
+
+
+
+
+
+
+
